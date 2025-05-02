@@ -82,14 +82,17 @@ All test scripts, sample data, and test outputs will be stored in `Assignment7/t
 
 ## Current Progress
 
-- ✅ Module 1: Web Content Extractor
+- ✅ Module 1: Web Content Extractor (Complete)
   - Successfully extracts main content from HTML
   - Converts to Markdown format
   - Filters sensitive domains
   - Handles a variety of websites without site-specific rules
+  - Fully tested and working
 
-- 🔄 Module 2: Embedding Generator (In Progress)
-  - Planning completed
-  - Implementation pending
+- ✅ Module 2: Embedding Generator (Complete)
+  - Generates Gemini embeddings for markdown chunks
+  - Maintains a persistent, growing FAISS index and metadata
+  - Handles API rate limits and unique file naming
+  - Fully tested and working
 
 - ⏱️ Remaining modules planned but not started 
