@@ -15,7 +15,7 @@
    - Convert content to Markdown format
    - Filter out sensitive domains (Gmail, WhatsApp, etc.)
 
-2. **Module 2: Embedding Generator** (`embedding_generator.py`) 🔄
+2. **Module 2: Embedding Generator** (`embedding_generator.py`) ✅
    - Set up embedding model (Nomic or alternative local model).
    - Create function to generate embeddings for text chunks.
    - Implement chunking system with overlap
@@ -31,10 +31,11 @@
    - Include metadata retrieval and result ranking.
    - Support for various search options (top-k results, etc.)
 
-5. **Module 5: API Server** (`api_server.py`)
+5. **Module 5: API Server** (`api_server.py`) ✅
    - Simple Flask API to expose backend functionality to Chrome plugin.
    - Endpoints for adding page content and performing searches.
    - Support for bulk operations
+   - **Now supports both Gemini and Ollama models for search.**
 
 ### Phase 2: Integration & Testing
 
@@ -94,5 +95,11 @@ All test scripts, sample data, and test outputs will be stored in `Assignment7/t
   - Maintains a persistent, growing FAISS index and metadata
   - Handles API rate limits and unique file naming
   - Fully tested and working
+
+- ⏳ Module 3: FAISS Index Builder (Planned)
+- ⏳ Module 4: Search Engine (Planned)
+- ✅ Module 5: API Server (Complete)
+  - Supports both Gemini and Ollama models for search
+  - Exposes search endpoint for Chrome plugin integration
 
 - ⏱️ Remaining modules planned but not started 
