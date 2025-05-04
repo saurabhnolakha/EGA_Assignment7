@@ -76,16 +76,86 @@ The project consists of two main components:
 
 ### Backend Components
 
-- **Content Extractor**: Extracts main content from HTML, converts to Markdown
-- **Embedding Generator**: Generates embeddings for text chunks using Ollama
-- **FAISS Index**: Stores and searches vectors efficiently
-- **API Server**: Flask-based server with endpoints for adding content and searching
+#### Content Extractor (`content_extractor.py`)
+- **Purpose**: Extracts relevant content from HTML pages while filtering out ads, navigation menus, and other noise
+- **Implementation**: Uses BeautifulSoup4 to parse HTML and customized algorithms to identify main content
+- **Features**:
+  - Converts HTML to clean Markdown format for better text processing
+  - Filters out sensitive domains (email, banking, etc.)
+  - Preserves important structural elements (headings, lists, links)
+  - Domain-agnostic approach works across various website layouts
+
+#### Embedding Generator (`embedding_generator_ollama.py`)
+- **Purpose**: Converts text chunks into numerical vector representations for semantic search
+- **Implementation**: Communicates with the Ollama API to generate embeddings using the `nomic-embed-text` model
+- **Features**:
+  - Breaks content into 50-word chunks with 15-word overlap
+  - Manages embedding generation with error handling
+  - Caches embeddings to avoid redundant processing
+  - Handles rate limiting and retries
+
+#### FAISS Index Management
+- **Purpose**: Efficiently stores and retrieves vector embeddings
+- **Implementation**: Uses Facebook AI Similarity Search (FAISS) library for vector storage and similarity search
+- **Features**:
+  - Uses a flat L2 index for maximum recall
+  - Serializes index to disk for persistence (`faiss_index_ollama.bin`)
+  - Supports incremental updates as new content is indexed
+  - Optimized for fast similarity searches
+
+#### API Server (`api_server.py`)
+- **Purpose**: Provides HTTP endpoints for the Chrome extension to interact with the backend
+- **Implementation**: Flask-based web server with JSON API endpoints
+- **Features**:
+  - `/add` endpoint for adding new pages to the index
+  - `/search` endpoint for querying the index
+  - CORS support for browser security
+  - Mutex locking to prevent race conditions
+  - Duplicate URL detection to avoid redundant processing
 
 ### Frontend Components
 
-- **Background Script**: Monitors browsing and manages history
-- **Content Script**: Extracts page content and handles highlighting
-- **Popup UI**: Provides search interface with result display
+#### Background Script (`background.js`)
+- **Purpose**: Monitors browsing activity and manages the extension's background processes
+- **Implementation**: Chrome extension service worker responding to browser events
+- **Features**:
+  - Listens for tab navigation events to capture page visits
+  - Manages periodic catch-up for pages that might have been missed
+  - Maintains browsing history in local storage
+  - Handles communication between popup and content scripts
+
+#### Content Script (`content.js`)
+- **Purpose**: Interacts with web pages for content extraction and highlighting
+- **Implementation**: JavaScript injected into web pages
+- **Features**:
+  - Sends page metadata (URL, title, timestamp) to backend for indexing
+  - Implements custom highlighting for Content Search
+  - Traverses the DOM to find and highlight text matches
+  - Uses mutation observers for dynamic content handling
+
+#### Popup UI (`popup.html`, `popup.js`)
+- **Purpose**: Provides user interface for search functionality
+- **Implementation**: HTML/JavaScript popup activated when clicking the extension icon
+- **Features**:
+  - Search input field and execution buttons
+  - Two search modes (Phrase Search and Content Search)
+  - Displays status messages and handles errors gracefully
+  - Communicates with both the background script and backend API
+
+### Data Flow
+
+1. **Content Capture Flow**:
+   - User visits a webpage → Content script captures URL, title, and timestamp
+   - Data sent to `/add` endpoint → Content extraction → Chunking → Embedding → Index update
+
+2. **Search Flow**:
+   - User enters query in popup → Query sent to `/search` endpoint
+   - Backend generates query embedding → FAISS search → Results ranked (with optional reranking)
+   - Results returned to popup → Selected result opened in new tab → Text highlighted
+
+3. **Highlighting Flow**:
+   - **Phrase Search**: Uses Chrome's native `#:~:text=` URL fragment
+   - **Content Search**: Injects content script → Traverses DOM → Wraps matching text in highlight elements
 
 ## Technical Details
 
