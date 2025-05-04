@@ -6,8 +6,8 @@ import requests
 import json
 
 # -- CONFIG --
-CHUNK_SIZE = 300
-CHUNK_OVERLAP = 40
+CHUNK_SIZE = 50
+CHUNK_OVERLAP = 15
 TEST_DIR = Path(__file__).parent / "test"
 TEST_DIR.mkdir(exist_ok=True)
 INDEX_FILE = Path(__file__).parent / "faiss_index_ollama.bin"

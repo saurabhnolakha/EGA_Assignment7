@@ -21,8 +21,8 @@ OLLAMA_INDEX_FILE = Path(__file__).parent / "faiss_index_ollama.bin"
 OLLAMA_METADATA_FILE = Path(__file__).parent / "metadata_ollama.json"
 EXTRACTED_DIR = Path(__file__).parent / "extracted_content"
 EXTRACTED_DIR.mkdir(exist_ok=True)
-CHUNK_SIZE = 300
-CHUNK_OVERLAP = 40
+CHUNK_SIZE = 50
+CHUNK_OVERLAP = 15
 LOCK_FILE = "metadata_ollama.lock"
 
 def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
