@@ -157,6 +157,64 @@ The project consists of two main components:
    - **Phrase Search**: Uses Chrome's native `#:~:text=` URL fragment
    - **Content Search**: Injects content script → Traverses DOM → Wraps matching text in highlight elements
 
+## Development Planning
+
+The development of Web History Memorizer followed a structured approach using a comprehensive `dev_plan.md` file, which served as the project's roadmap and helped manage complexity.
+
+### Development Plan Structure
+
+The development plan organized the project into distinct modules:
+
+1. **Module 1: Content Extraction and Processing**
+   - Focused on extracting meaningful content from web pages
+   - Established the foundation for text chunking and storage
+
+2. **Module 2: Embedding and Indexing**
+   - Implemented vector embeddings through Ollama integration
+   - Set up FAISS indexing for efficient similarity search
+
+3. **Module 3: Chrome Extension Frontend**
+   - Developed the user interface and search experience
+   - Created mechanisms for browsing history capture
+
+4. **Module 4: Integration and Highlighting**
+   - Connected the backend and frontend components
+   - Implemented two highlighting methods (Phrase and Content search)
+
+5. **Module 5: API Development**
+   - Designed REST endpoints for communication
+   - Added security measures and error handling
+
+### Benefits of Structured Development
+
+The modular approach provided several advantages:
+
+- **Manageable Complexity**: Breaking the project into focused modules helped tackle complex problems incrementally
+- **Clear Dependencies**: Each module built on previous ones with clear interfaces
+- **Easier Debugging**: Issues could be isolated to specific modules for faster resolution
+- **Progress Tracking**: Module-wise tracking made it easier to measure development progress
+- **Flexible Implementation**: Individual modules could be optimized independently
+
+### Iterative Improvement
+
+The development plan also facilitated iterative improvements:
+
+- **Parameter Tuning**: Identified optimal chunking parameters (50 words, 15-word overlap)
+- **Performance Optimization**: Revealed bottlenecks for targeted improvements
+- **Feature Prioritization**: Helped identify and prioritize core vs. nice-to-have features
+- **Technical Debt Management**: Provided visibility into areas needing refactoring
+
+### Challenges Addressed
+
+The structured approach helped overcome several key challenges:
+
+- **Cross-Domain Development**: Coordinating Python backend with JavaScript frontend
+- **Embedding Quality**: Finding the right balance between chunk size and search precision
+- **Browser Security**: Navigating Chrome's content security policies and extension limitations
+- **Highlighting Accuracy**: Developing two distinct highlighting strategies for different use cases
+
+The disciplined development approach enabled the successful implementation of a complex system spanning multiple technologies, from vector databases to browser extensions, while maintaining a coherent user experience.
+
 ## Technical Details
 
 ### Dependencies
