@@ -36,6 +36,7 @@
    - Endpoints for adding page content and performing searches.
    - Support for bulk operations
    - **Now supports both Gemini and Ollama models for search.**
+   - **Supports rerank parameter for exact/substring match prioritization.**
 
 ### Phase 2: Integration & Testing
 
@@ -51,24 +52,25 @@
 
 ### Phase 3: Chrome Plugin Development
 
-8. **Plugin Structure Setup**
+8. **Plugin Structure Setup** ✅
    - Manifest.json configuration
    - Content scripts for page interaction
    - Background script for API communication
 
-9. **Content Capture System**
+9. **Content Capture System** ✅
    - JavaScript to extract page content on visit
    - Skip functionality for confidential pages
    - Queue system for processing
 
-10. **Search UI**
+10. **Search UI** ✅
     - Simple popup interface for search queries
     - Results display with links to pages
-    - Highlighting functionality
+    - **Two search modes: Phrase Search (exact match, Chrome text fragment, reranking) and Content Search (semantic match, custom highlight via content script).**
 
-11. **Text Highlighting**
+11. **Text Highlighting** ⏳
     - System to locate and highlight search matches on target pages
     - Scroll to relevant content
+    - **Implemented for both Chrome native and custom content script, but further robustness/debugging ongoing.**
 
 ## Implementation Strategy
 
@@ -91,15 +93,39 @@ All test scripts, sample data, and test outputs will be stored in `Assignment7/t
   - Fully tested and working
 
 - ✅ Module 2: Embedding Generator (Complete)
-  - Generates Gemini embeddings for markdown chunks
+  - Generates Gemini and Ollama embeddings for markdown chunks
   - Maintains a persistent, growing FAISS index and metadata
   - Handles API rate limits and unique file naming
   - Fully tested and working
 
 - ⏳ Module 3: FAISS Index Builder (Planned)
+  - Functions to build and update FAISS index from embeddings are currently implemented within the embedding generator scripts.
+  - Serialization/deserialization to save and load index files is in place.
+  - Metadata storage for mapping chunks to URLs is handled in metadata files.
+  - **Planned:** Modularize this logic into a dedicated `index_builder.py` for better maintainability and reuse.
+
 - ⏳ Module 4: Search Engine (Planned)
+  - Search function using FAISS for semantic similarity is implemented in the API server.
+  - Metadata retrieval and result ranking (including rerank for exact/substring match) is supported.
+  - Support for various search options (top-k results, rerank toggle) is present.
+  - **Planned:** Move search logic to a dedicated `search_engine.py` module for modularity and easier testing.
+
 - ✅ Module 5: API Server (Complete)
   - Supports both Gemini and Ollama models for search
   - Exposes search endpoint for Chrome plugin integration
+  - Supports rerank parameter for exact/substring match prioritization
 
-- ⏱️ Remaining modules planned but not started 
+- ✅ Chrome Plugin: Structure, Content Capture, Search UI (Complete)
+  - Phrase Search (exact match, Chrome text fragment, reranking)
+  - Content Search (semantic match, custom highlight via content script)
+  - Highlighting implemented, further robustness/debugging ongoing
+
+- ⏳ Text Highlighting: Robustness and cross-site support (Ongoing)
+- ⏳ End-to-End Testing and UX polish (Next)
+
+## Next Steps
+
+- **Robustify and debug content script highlighting across more sites and edge cases.**
+- **Add scroll-to-highlight and clear highlight features.**
+- **Conduct end-to-end testing and polish user experience.**
+- **(Optional) Modularize index builder and search engine as planned.** 
