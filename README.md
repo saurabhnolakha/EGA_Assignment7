@@ -37,7 +37,16 @@ Web History Memorizer is a Chrome extension that automatically indexes web pages
    pip install -r requirements.txt
    ```
 
-3. Start the API server
+3. Start Ollama and pull the embedding model
+   ```
+   # Start the Ollama server (if not already running)
+   ollama serve
+   
+   # In a new terminal, pull the required embedding model
+   ollama pull nomic-embed-text
+   ```
+
+4. Start the API server
    ```
    python api_server.py
    ```
